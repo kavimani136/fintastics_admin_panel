@@ -38,6 +38,7 @@ private fillForm(parsedData) {
   debugger
   this.editForm.addEditForm.patchValue({
     payment_type:parsedData.payment_type,
+    delete_status:parsedData.delete_status
   
   });
 }

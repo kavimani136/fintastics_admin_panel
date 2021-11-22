@@ -16,6 +16,7 @@ import { EditTransactionDescriptionComponent } from "./edit-transaction-descript
 export class Product {
           desc_type:string;
           _id:string;
+          delete_status:string;
           createdDate:string;
           updatedDate:string;
 }
@@ -42,8 +43,8 @@ export class TransactionDescriptionComponent implements OnInit {
   constructor(private router: Router,private adminService:AdminModulesService,private exportToExcelService: ExportToExcelService,public dialog: MatDialog)
    { }
 
-  public displayedColumns: string[] = ['desc_type','createdDate',  'updatedDate','actions'];
-  public displayedLabelColumns: string[] = ['description type','created Date',  'updated Date', 'actions'];
+  public displayedColumns: string[] = ['sno','desc_type','delete_status','createdDate',  'updatedDate','actions'];
+  public displayedLabelColumns: string[] = ['serial No','description type','delete status','created Date',  'updated Date', 'actions'];
   dataSource: MatTableDataSource<Product>;
 
   ngOnInit() {
@@ -69,7 +70,7 @@ export class TransactionDescriptionComponent implements OnInit {
       if(element.roll_type != "SuperAdmin"){
         let row: Product = {
           desc_type:element.desc_type,
-          _id:element._id,
+          _id:element._id,    delete_status:element.delete_status && element.delete_status == true ?  "true" : "false" ,
           createdDate: element.createdAt,
           updatedDate: element.updatedAt,
         }
@@ -124,7 +125,7 @@ export class TransactionDescriptionComponent implements OnInit {
       data: {
         _id:items._id,
         desc_type:items.desc_type,
-       
+        delete_status:items.delete_status
       }
     });
     dialogRef.afterClosed().subscribe(result => {

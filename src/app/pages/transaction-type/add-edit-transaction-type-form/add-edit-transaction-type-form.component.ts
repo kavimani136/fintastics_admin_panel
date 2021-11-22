@@ -26,7 +26,8 @@ export class AddEditTransactionTypeFormComponent implements OnInit {
   ngOnInit() {
     this.addEditForm = this.fb.group({
       payment_type: ['',Validators.required],
-      date_and_time:['']
+      date_and_time:[''],
+      delete_status:['false']
     });
   }
 

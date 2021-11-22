@@ -23,7 +23,7 @@
       <div *ngFor="let displayCol of displayedColumns; let i = index" matColumnDef="{{ displayCol }}">
       <th mat-header-cell class="field-title" *matHeaderCellDef mat-sort-header> {{ displayedLabelColumns[i] }} </th>
     
-        <ng-container *matCellDef="let element" [ngSwitch]="displayCol">
+        <ng-container *matCellDef="let element;let i = index" [ngSwitch]="displayCol">
           <td mat-cell *ngSwitchCase="'actions'" (click)="$event.stopPropagation()">
           
 
@@ -31,11 +31,14 @@
           (click)="editRecord(element)">
           <mat-icon class="edit-mat-icon">edit</mat-icon>
         </button>
-          <button mat-icon-button  matTooltip="Delete"
+          <!-- <button mat-icon-button  matTooltip="Delete"
             (click)="deleteRecord(element._id)">
             <mat-icon class="delete-mat-icon">delete</mat-icon>
-          </button>
+          </button> -->
        
+          </td>
+          <td mat-cell *ngSwitchCase="'sno'">
+            {{ i+1 }}
           </td>
           <td mat-cell *ngSwitchCase="'createdDate'">
             {{ element[displayCol] | date: DATE_FORMAT }}

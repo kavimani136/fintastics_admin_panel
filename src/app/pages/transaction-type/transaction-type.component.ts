@@ -15,8 +15,10 @@ import { AddTransactionTypeComponent } from "./add-transaction-type/add-transact
 import { EditTransactionTypeComponent } from "./edit-transaction-type/edit-transaction-type.component";
 
 export class Product {
+  sno:Number;
          payment_type:string;
           _id:string;
+          delete_status:string;
           createdDate:string;
           updatedDate:string;
 }
@@ -45,8 +47,8 @@ export class TransactionTypeComponent implements OnInit {
   constructor(private router: Router,private adminService:AdminModulesService,private exportToExcelService: ExportToExcelService,public dialog: MatDialog)
    { }
 
-  public displayedColumns: string[] = ['payment_type','createdDate',  'updatedDate','actions'];
-  public displayedLabelColumns: string[] = ['payment type','created Date',  'updated Date', 'actions'];
+  public displayedColumns: string[] = ['sno','payment_type','delete_status','createdDate',  'updatedDate','actions'];
+  public displayedLabelColumns: string[] = ['serial No','payment type','delete status','created Date',  'updated Date', 'actions'];
   dataSource: MatTableDataSource<Product>;
 
   ngOnInit() {
@@ -58,6 +60,7 @@ export class TransactionTypeComponent implements OnInit {
     .subscribe( data => {
         console.log("data2 ",data); 
         this.salesPersonList = data['Data'];
+        
         this.loadRecord();
       },error => {
         this.error = error;
@@ -67,12 +70,16 @@ export class TransactionTypeComponent implements OnInit {
 
   loadRecord() {
     debugger
+ 
     this.dynamicTableData = [];
+    var Count = 0;
     this.salesPersonList.forEach(element => {
       if(element.roll_type != "SuperAdmin"){
         let row: Product = {
+          sno:element.s_no,
           payment_type:element.payment_type,
           _id:element._id,
+          delete_status:element.delete_status && element.delete_status == true ?  "true" : "false" ,
           createdDate: element.createdAt,
           updatedDate: element.updatedAt,
         }
@@ -126,6 +133,7 @@ export class TransactionTypeComponent implements OnInit {
       disableClose: true,
       data: {
         _id:items._id,
+        delete_status:items.delete_status,
         payment_type:items.payment_type
       }
     });

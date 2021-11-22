@@ -38,7 +38,7 @@ private fillForm(parsedData) {
   debugger
   this.editForm.addEditForm.patchValue({
     desc_type:parsedData.desc_type,
-  
+    delete_status:parsedData.delete_status
   });
 }
 

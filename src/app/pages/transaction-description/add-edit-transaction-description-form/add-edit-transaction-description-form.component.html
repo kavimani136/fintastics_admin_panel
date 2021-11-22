@@ -7,7 +7,12 @@
         <input matInput   [errorStateMatcher]="matcher" formControlName="desc_type" type="text"   />
         <mat-error *ngIf="addEditForm.controls.desc_type.hasError('required') && isShowErrors" >Description Type is required</mat-error>
       </mat-form-field>
-          
+                
+      <mat-label class="pr-2 text-center">Delete Status </mat-label>
+      <mat-radio-group aria-label="Is Active" formControlName="delete_status" class="inputField exammanage-radio-group" mat-form-field>
+      <mat-radio-button value="true">Yes</mat-radio-button> &nbsp;
+       <mat-radio-button value="false">No</mat-radio-button>
+      </mat-radio-group>
 
   
 </form>
