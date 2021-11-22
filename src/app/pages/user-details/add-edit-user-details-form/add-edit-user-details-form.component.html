@@ -1,0 +1,33 @@
+<div class="col-md-12">
+    <form [formGroup]="addEditForm">
+
+
+      <mat-form-field class="pt-2" appearance="outline">
+        <mat-label class="">User Name</mat-label>
+        <input matInput   [errorStateMatcher]="matcher" formControlName="username" type="text"   />
+        <mat-error *ngIf="addEditForm.controls.username.hasError('required') && isShowErrors" >User Name is required</mat-error>
+      </mat-form-field>
+          
+      <mat-form-field class="pt-2" appearance="outline">
+        <mat-label class="">Password</mat-label>
+        <input matInput   [errorStateMatcher]="matcher" formControlName="password" type="text"   />
+        <mat-error *ngIf="addEditForm.controls.password.hasError('required') && isShowErrors" >Password is required</mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="pt-2" appearance="outline">
+        <mat-label class="">Email</mat-label>
+        <input matInput   [errorStateMatcher]="matcher" formControlName="user_email" type="text"   />
+        <mat-error *ngIf="addEditForm.controls.user_email.hasError('required') && isShowErrors" >User Email is required</mat-error>
+      </mat-form-field>
+          
+      <mat-form-field class="pt-2" appearance="outline">
+        <mat-label class="">Phone</mat-label>
+        <input matInput   [errorStateMatcher]="matcher" formControlName="user_phone" type="text"   />
+        <mat-error *ngIf="addEditForm.controls.user_phone.hasError('required') && isShowErrors" >Phone is required</mat-error>
+      </mat-form-field>
+
+
+
+  
+</form>
+</div>

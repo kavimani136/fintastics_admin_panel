@@ -1,0 +1,14 @@
+<div class="col-md-12">
+    <form [formGroup]="addEditForm">
+
+
+      <mat-form-field class="pt-2" appearance="outline">
+        <mat-label class="">Payment Type</mat-label>
+        <input matInput   [errorStateMatcher]="matcher" formControlName="payment_type" type="text"   />
+        <mat-error *ngIf="addEditForm.controls.payment_type.hasError('required') && isShowErrors" >Payment Type is required</mat-error>
+      </mat-form-field>
+          
+
+  
+</form>
+</div>
