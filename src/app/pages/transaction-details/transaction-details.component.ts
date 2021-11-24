@@ -10,6 +10,7 @@ import { User } from "src/app/core/models/auth.models";
 import { AdminModulesService } from "src/app/core/services/admin/admin-modules.service";
 import { ExportToExcelService } from "src/app/core/services/exportExcel/export-to-excel.service";
 import { ActivatedRoute } from "@angular/router";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 
 export class Product {
   username:string;
@@ -33,7 +34,7 @@ export class Product {
 export class TransactionDetailsComponent implements OnInit {
 
  
- 
+  public formGroup: FormGroup;
   @ViewChild('test1', { static: false }) content: ElementRef;
   testAttributesMap = new Map();
   
@@ -51,7 +52,7 @@ export class TransactionDetailsComponent implements OnInit {
   roll_type: any;
   balance: any;
   
-  constructor(private route: ActivatedRoute,private adminService:AdminModulesService,private exportToExcelService: ExportToExcelService,public dialog: MatDialog)
+  constructor(private fb: FormBuilder,private route: ActivatedRoute,private adminService:AdminModulesService,private exportToExcelService: ExportToExcelService,public dialog: MatDialog)
    {  this.route.queryParams.subscribe(params => {
     this.user_id = params['user_id'];
     this.username = params['username'];
@@ -60,12 +61,19 @@ export class TransactionDetailsComponent implements OnInit {
   });       
 }
 
-  public displayedColumns: string[] = ['username','transaction_amount','transaction_date','transaction_type','transaction_desc','transaction_way','transaction_balance','createdDate',  'updatedDate'];
-  public displayedLabelColumns: string[] = ['user name','transaction amount','transaction date','transaction type','transaction desc','transaction way','transaction balance','created Date',  'updated Date'];
+  public displayedColumns: string[] = ['sno','username','transaction_amount','transaction_date','transaction_type','transaction_desc','transaction_way','transaction_balance','createdDate',  'updatedDate'];
+  public displayedLabelColumns: string[] = ['serial No','user name','transaction amount','transaction date','transaction type','transaction desc','transaction way','transaction balance','created Date',  'updated Date'];
   dataSource: MatTableDataSource<Product>;
 
   ngOnInit() {
    this.getAllTransaction();
+   var currentDate = new Date();
+   var beforeMonthDate = currentDate.setMonth(currentDate.getMonth() - 1);
+   this.formGroup = this.fb.group({
+    startDate: [new Date(beforeMonthDate), Validators.required],
+    endDate: [new Date(), Validators.required],
+
+  });
   }
 
   getAllTransaction(){
@@ -84,6 +92,22 @@ export class TransactionDetailsComponent implements OnInit {
       });
   }
 
+  filterDatasClearForm(){
+    this.getAllTransaction();
+  }
+
+  submitData(){
+    this.adminService.getFilterDatas(this.formGroup.value).pipe()
+    .subscribe( data => {
+        console.log("getFilterDatas ",data); 
+        this.salesPersonList = data['Data'];
+        this.loadRecord();
+      },error => {
+        this.error = error;
+      });
+  }
+
+
 
   loadRecord() {
     debugger
@@ -99,7 +123,7 @@ export class TransactionDetailsComponent implements OnInit {
           updatedDate: element.updatedAt,
           transaction_way:element.transaction_way,
           transaction_amount:element.transaction_amount,
-          transaction_balance:element.transaction_balance,
+          transaction_balance:element && element.transaction_balance == 0 ? "0" : element.transaction_balance,
           system_date:element.system_date,
           _id:element._id,
           

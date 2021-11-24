@@ -26,8 +26,8 @@ export class LoginComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     this.loginForm = this.formBuilder.group({
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', Validators.required],
+      email: ['admin@gmail.com', [Validators.required, Validators.email]],
+      password: ['admin', Validators.required],
     });
 
     // reset login status
@@ -63,14 +63,14 @@ export class LoginComponent implements OnInit, AfterViewInit {
       .subscribe(
         data => {
           console.log("data ",data);
-          if(data.length == 0){
+          if(data.Message == "user_email or password incorrect"){
             Swal.fire({toast: true, position: 'top-end', showConfirmButton: false, timer: 3000, title: "Invalid user", icon: 'error', });
           }else{
             this.cookieService.setCookie('isClear', JSON.stringify(true), 1);
             this.router.navigate([this.returnUrl]);
             this.loading = false;
           }
-
+         
         },
         error => {
           console.log("error ",error);

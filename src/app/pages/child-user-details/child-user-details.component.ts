@@ -11,6 +11,7 @@ import { AdminModulesService } from "src/app/core/services/admin/admin-modules.s
 import { ExportToExcelService } from "src/app/core/services/exportExcel/export-to-excel.service";
 import { ActivatedRoute, Router } from "@angular/router";
 import { ViewUserDetailsComponent } from "../view-user-details/view-user-details.component";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 
 export class Product {
   roll_type:string;
@@ -39,19 +40,19 @@ export class ChildUserDetailsComponent implements OnInit {
  
   @ViewChild('test1', { static: false }) content: ElementRef;
   testAttributesMap = new Map();
-  
+  public formGroup: FormGroup;
   PAGE_SIZE = MatTableAttributes.PAGE_SIZE;
   PAGINATION_RANGE = MatTableAttributes.PAGINATION_RANGE;
   DATE_FORMAT = DateFormat.DATE_FORMAT;
   @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: false }) sort: MatSort;
   error = '';
-  salesPersonList:any;
+  userList:any;
   dynamicTableData: any[];
   user: User;
   parent_of: any;
   
-  constructor(private route: ActivatedRoute,private router: Router,private adminService:AdminModulesService,private exportToExcelService: ExportToExcelService,public dialog: MatDialog)
+  constructor(private fb: FormBuilder,private route: ActivatedRoute,private router: Router,private adminService:AdminModulesService,private exportToExcelService: ExportToExcelService,public dialog: MatDialog)
    { 
     this.route.queryParams.subscribe(params => {
       this.parent_of = params['parent_of'];
@@ -59,12 +60,19 @@ export class ChildUserDetailsComponent implements OnInit {
     });       
    }
 
-  public displayedColumns: string[] = ['username','user_email','user_phone','mobile_type','account_type','roll_type','createdDate',  'updatedDate','actions'];
-  public displayedLabelColumns: string[] = ['user name','user email','user phone','mobile type','account type','roll type','created Date',  'updated Date', 'actions'];
+  public displayedColumns: string[] = ['sno','username','user_email','user_phone','mobile_type','account_type','roll_type','createdDate',  'updatedDate','actions'];
+  public displayedLabelColumns: string[] = ['serial no','user name','user email','user phone','mobile type','account type','roll type','created Date',  'updated Date', 'actions'];
   dataSource: MatTableDataSource<Product>;
 
   ngOnInit() {
    this.getAllCustomer();
+   var currentDate = new Date();
+   var beforeMonthDate = currentDate.setMonth(currentDate.getMonth() - 1);
+   this.formGroup = this.fb.group({
+    startDate: [new Date(beforeMonthDate), Validators.required],
+    endDate: [new Date(), Validators.required],
+
+  });
   }
 
   getAllCustomer(){
@@ -72,7 +80,7 @@ export class ChildUserDetailsComponent implements OnInit {
     this.adminService.getChildUserList(this.parent_of).pipe()
     .subscribe( data => {
         console.log("data ",data); 
-        this.salesPersonList = data['Data'];
+        this.userList = data['Data'];
         this.loadRecord();
       },error => {
         this.error = error;
@@ -83,7 +91,7 @@ export class ChildUserDetailsComponent implements OnInit {
   loadRecord() {
     debugger
     this.dynamicTableData = [];
-    this.salesPersonList.forEach(element => {
+    this.userList.forEach(element => {
       if(element.userType != "ADMIN" && element.parent_code != this.parent_of){
         let row: Product = {
           first_name:element.first_name,
@@ -256,6 +264,22 @@ export class ChildUserDetailsComponent implements OnInit {
         queryParams: { user_id: element._id, username: element.username ,roll_type:element.roll_type },
        };
         this.router.navigate(['/transaction-details'],navigationExtras);
+  }
+
+
+  filterDatasClearForm(){
+    this.getAllCustomer();
+  }
+
+  submitData(){
+    this.adminService.getFilterDatas(this.formGroup.value).pipe()
+    .subscribe( data => {
+        console.log("getFilterDatas ",data); 
+        this.userList = data['Data'];
+        this.loadRecord();
+      },error => {
+        this.error = error;
+      });
   }
 
 

@@ -12,6 +12,7 @@ import { ExportToExcelService } from "src/app/core/services/exportExcel/export-t
 import { Router } from "@angular/router";
 import { AddTransactionDescriptionComponent } from "./add-transaction-description/add-transaction-description.component";
 import { EditTransactionDescriptionComponent } from "./edit-transaction-description/edit-transaction-description.component";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 
 export class Product {
           desc_type:string;
@@ -28,19 +29,19 @@ export class Product {
 export class TransactionDescriptionComponent implements OnInit {
   @ViewChild('test1', { static: false }) content: ElementRef;
   testAttributesMap = new Map();
-  
+  public formGroup: FormGroup;
   PAGE_SIZE = MatTableAttributes.PAGE_SIZE;
   PAGINATION_RANGE = MatTableAttributes.PAGINATION_RANGE;
   DATE_FORMAT = DateFormat.DATE_FORMAT;
   @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: false }) sort: MatSort;
   error = '';
-  salesPersonList:any;
+  userList:any;
   dynamicTableData: any[];
   user: User;
   dialogRef: any;
   
-  constructor(private router: Router,private adminService:AdminModulesService,private exportToExcelService: ExportToExcelService,public dialog: MatDialog)
+  constructor(private fb: FormBuilder,private router: Router,private adminService:AdminModulesService,private exportToExcelService: ExportToExcelService,public dialog: MatDialog)
    { }
 
   public displayedColumns: string[] = ['sno','desc_type','delete_status','createdDate',  'updatedDate','actions'];
@@ -49,13 +50,35 @@ export class TransactionDescriptionComponent implements OnInit {
 
   ngOnInit() {
    this.getAllCustomer();
+   var currentDate = new Date();
+   var beforeMonthDate = currentDate.setMonth(currentDate.getMonth() - 1);
+   this.formGroup = this.fb.group({
+    startDate: [new Date(beforeMonthDate), Validators.required],
+    endDate: [new Date(), Validators.required],
+
+  });
+  }
+
+  filterDatasClearForm(){
+    this.getAllCustomer();
+  }
+
+  submitData(){
+    this.adminService.getFilterDatas(this.formGroup.value).pipe()
+    .subscribe( data => {
+        console.log("getFilterDatas ",data); 
+        this.userList = data['Data'];
+        this.loadRecord();
+      },error => {
+        this.error = error;
+      });
   }
 
   getAllCustomer(){
     this.adminService.getTransactionDescriptionList().pipe()
     .subscribe( data => {
         console.log("data2 ",data); 
-        this.salesPersonList = data['Data'];
+        this.userList = data['Data'];
         this.loadRecord();
       },error => {
         this.error = error;
@@ -66,7 +89,7 @@ export class TransactionDescriptionComponent implements OnInit {
   loadRecord() {
     debugger
     this.dynamicTableData = [];
-    this.salesPersonList.forEach(element => {
+    this.userList.forEach(element => {
       if(element.roll_type != "SuperAdmin"){
         let row: Product = {
           desc_type:element.desc_type,

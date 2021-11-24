@@ -75,6 +75,7 @@ span{
   vertical-align: middle;
   align-items: initial;
   padding: 5px 6px !important;
+  border: 0.5px solid lightgrey;
   }
     
   th.mat-header-cell, .mat-header-cell {
@@ -340,4 +341,7 @@ span{
 
 .mat-flat-button.mat-primary, .mat-raised-button.mat-primary, .mat-fab.mat-primary, .mat-mini-fab.mat-primary {
   background-color: #26a2fd;
+}
+.swal2-styled.swal2-confirm, .swal2-styled.swal2-cancel{
+  width: 17% !important;
 }

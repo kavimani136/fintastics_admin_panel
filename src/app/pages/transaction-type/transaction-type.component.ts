@@ -13,6 +13,7 @@ import { Router } from "@angular/router";
 import { ViewUserDetailsComponent } from "../view-user-details/view-user-details.component";
 import { AddTransactionTypeComponent } from "./add-transaction-type/add-transaction-type.component";
 import { EditTransactionTypeComponent } from "./edit-transaction-type/edit-transaction-type.component";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 
 export class Product {
   sno:Number;
@@ -32,7 +33,7 @@ export class TransactionTypeComponent implements OnInit {
 
   @ViewChild('test1', { static: false }) content: ElementRef;
   testAttributesMap = new Map();
-  
+  public formGroup: FormGroup;
   PAGE_SIZE = MatTableAttributes.PAGE_SIZE;
   PAGINATION_RANGE = MatTableAttributes.PAGINATION_RANGE;
   DATE_FORMAT = DateFormat.DATE_FORMAT;
@@ -44,7 +45,7 @@ export class TransactionTypeComponent implements OnInit {
   user: User;
   dialogRef: any;
   
-  constructor(private router: Router,private adminService:AdminModulesService,private exportToExcelService: ExportToExcelService,public dialog: MatDialog)
+  constructor(private fb: FormBuilder,private router: Router,private adminService:AdminModulesService,private exportToExcelService: ExportToExcelService,public dialog: MatDialog)
    { }
 
   public displayedColumns: string[] = ['sno','payment_type','delete_status','createdDate',  'updatedDate','actions'];
@@ -53,6 +54,13 @@ export class TransactionTypeComponent implements OnInit {
 
   ngOnInit() {
    this.getAllCustomer();
+   var currentDate = new Date();
+   var beforeMonthDate = currentDate.setMonth(currentDate.getMonth() - 1);
+   this.formGroup = this.fb.group({
+    startDate: [new Date(beforeMonthDate), Validators.required],
+    endDate: [new Date(), Validators.required],
+
+  });
   }
 
   getAllCustomer(){
@@ -66,6 +74,23 @@ export class TransactionTypeComponent implements OnInit {
         this.error = error;
       });
   }
+
+
+  filterDatasClearForm(){
+    this.getAllCustomer();
+  }
+
+  submitData(){
+    this.adminService.getFilterDatas(this.formGroup.value).pipe()
+    .subscribe( data => {
+        console.log("getFilterDatas ",data); 
+        this.salesPersonList = data['Data'];
+        this.loadRecord();
+      },error => {
+        this.error = error;
+      });
+  }
+
 
 
   loadRecord() {

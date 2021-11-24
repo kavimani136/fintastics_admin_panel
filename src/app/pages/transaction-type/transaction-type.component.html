@@ -1,9 +1,36 @@
 <div class="col-md-12 p-0">
     <div class="page-title"> payment Type </div>
         
+    <div class="row outline m-0 mt-2 mb-2 p-0">
+      <div class="col-12 pt-1 page-sub-title-2">Filter</div>
+      <form [formGroup]="formGroup" class="col-12 row p-0 pl-3">
+
+          <div class="col-md-3 pull-left">
+              <mat-form-field>
+                  <input (click)="picker1.open()" readonly matInput [matDatepicker]="picker1" placeholder="Start Date"
+                      formControlName="startDate" (dateChange)="setEndDateMinValue()" required />
+                  <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                  <mat-datepicker #picker1 disabled="false"></mat-datepicker>
+              </mat-form-field>
+          </div>
+          <div class="col-md-3 pull-left">
+              <mat-form-field>
+                  <input (click)="picker2.open()" readonly matInput [matDatepicker]="picker2" placeholder="End Date"
+                      formControlName="endDate" [min]="minEndDate" required />
+                  <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                  <mat-datepicker #picker2 disabled="false"></mat-datepicker>
+              </mat-form-field>
+          </div>
+          <div class="col-md-3 pt-2 pull-left">
+              <button mat-raised-button (click)="submitData()" class="btnnn-prime-fn">Search</button>&nbsp;&nbsp;
+              <button type="submit" (click)="filterDatasClearForm()" mat-button class="btnnn-prime-fn">Clear</button>
+          </div>
+      </form>
+  </div>
+  
     <div class="col-md-12">
       <div class="row">
-        <mat-form-field class="col-md-6 p-0" appearance="outline" >
+        <mat-form-field class="col-md-4 p-0" appearance="outline" >
           <mat-label>Search</mat-label>
           <input matInput (keyup)="applyFilter($event)" placeholder="" />
         </mat-form-field>
@@ -11,7 +38,7 @@
           <button mat-raised-button class="btnnn-secondary-fn mr-2" (click)="exportAsXLSX()">
               <img  src="../../../assets/images/excel.png" style="width: 25px" class="button-icon" alt="excel icon" mat-responsive /> Export to Excel</button>
          </div> -->
-        <div class="col-md-6 p-0 example-button-container" >
+        <div class="col-md-8 p-0 example-button-container" >
           <button style="float: right;" mat-mini-fab color="primary"   matTooltip="Create Payment Type" (click)="addRecord()"> + </button>
         </div>
       </div>

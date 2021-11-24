@@ -16,6 +16,11 @@ export class AdminModulesService {
     return this.http.get(CommonConstants.WEBAPI_URL+'userdetails/getlist')
   }
 
+  getFilterDatas(data:any){
+    return this.http.post(CommonConstants.WEBAPI_URL+'userdetails/getFilterDatas',data)
+  }
+
+
   getChildUserList(parent_of:any){
     return this.http.post(CommonConstants.WEBAPI_URL+'userdetails/fetch_child',{parent_of})
   }
