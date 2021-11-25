@@ -97,7 +97,7 @@ export class TransactionDetailsComponent implements OnInit {
   }
 
   submitData(){
-    this.adminService.getFilterDatas(this.formGroup.value).pipe()
+    this.adminService.getTransactionFilterDatas(this.formGroup.value).pipe()
     .subscribe( data => {
         console.log("getFilterDatas ",data); 
         this.salesPersonList = data['Data'];

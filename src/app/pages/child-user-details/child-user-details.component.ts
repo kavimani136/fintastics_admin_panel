@@ -272,7 +272,7 @@ export class ChildUserDetailsComponent implements OnInit {
   }
 
   submitData(){
-    this.adminService.getFilterDatas(this.formGroup.value).pipe()
+    this.adminService.getChildFilterDatas(this.formGroup.value,this.parent_of).pipe()
     .subscribe( data => {
         console.log("getFilterDatas ",data); 
         this.userList = data['Data'];

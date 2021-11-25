@@ -64,7 +64,7 @@ export class TransactionDescriptionComponent implements OnInit {
   }
 
   submitData(){
-    this.adminService.getFilterDatas(this.formGroup.value).pipe()
+    this.adminService.getDescriptionTypeFilterDatas(this.formGroup.value).pipe()
     .subscribe( data => {
         console.log("getFilterDatas ",data); 
         this.userList = data['Data'];

@@ -17,7 +17,11 @@ export class AdminModulesService {
   }
 
   getFilterDatas(data:any){
-    return this.http.post(CommonConstants.WEBAPI_URL+'userdetails/getFilterDatas',data)
+    return this.http.post(CommonConstants.WEBAPI_URL+'userdetails/getFilterDatas',{data})
+  }
+
+  getChildFilterDatas(data:any,parent_of){
+    return this.http.post(CommonConstants.WEBAPI_URL+'userdetails/getChildFilterDatas',{data,parent_of})
   }
 
 
@@ -51,7 +55,9 @@ export class AdminModulesService {
   getTransactionList(data:any){
     return this.http.post(CommonConstants.WEBAPI_URL+'transaction/accountsummery/data',data)
   }
-
+  getTransactionFilterDatas(data:any){
+    return this.http.post(CommonConstants.WEBAPI_URL+'transaction/getFilterDatas',{data})
+  }
  
   getDasboardList(){
     return this.http.get(CommonConstants.WEBAPI_URL+'dashboard_details/getlist')
@@ -70,9 +76,14 @@ export class AdminModulesService {
   deletePayment(_id:any){
     return this.http.post(CommonConstants.WEBAPI_URL+'payment_type/delete/',{_id});
   }
+  getPaymentFilterDatas(data:any){
+    return this.http.post(CommonConstants.WEBAPI_URL+'payment_type/getFilterDatas',{data})
+  }
 
 
-
+  getDescriptionTypeFilterDatas(data:any){
+    return this.http.post(CommonConstants.WEBAPI_URL+'desc_type/getFilterDatas',{data})
+  }
   creatDescriptionType(data:any){
     return this.http.post(CommonConstants.WEBAPI_URL+'desc_type/create',data);
   }
@@ -88,7 +99,6 @@ export class AdminModulesService {
   deleteDescription(_id:any){
     return this.http.post(CommonConstants.WEBAPI_URL+'desc_type/delete/',{_id});
   }
-
 
     
 }
