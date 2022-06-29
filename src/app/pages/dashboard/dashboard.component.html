@@ -4,7 +4,7 @@
 
  
   <div class="row">
-    <div class="col-md-6 col-xl-3">
+    <div class="col-md-6 col-xl-3 pl-0">
       <div class="card">
         <div class="card-body card-hover p-0" >
             <div class="media p-3">
@@ -76,35 +76,58 @@
   </div>
 
 
+  <div class="col-6" style="text-align: end;cursor: pointer !important;padding-right: 10px;">
+    <mat-icon matTooltip="See Different Charts" style="cursor: pointer !important;" [matMenuTriggerFor]="userMenu"
+      class="pl-4 edit-mat-icon">dashboard</mat-icon>
+  </div>
 
-
-  <!-- <div class="row">
-    <div class="col-xl-6">
-      <div class="card">
-        <div class="card-body pt-2">
-          <h6 class="font-size-16 mb-4">Chart 1</h6>
-        
-        </div>
-      </div>
+  <mat-menu #userMenu="matMenu" xPosition="before" yPosition="above" [overlapTrigger]="false">
+    <a mat-menu-item (click)="pieChart()">
+      Pie Chart
+    </a>
+    <a mat-menu-item (click)="barChart()">
+      Bar Chart
+    </a>
+    <a mat-menu-item (click)="gauge()">
+      Gauge Chart
+    </a>
+  </mat-menu>
+  
+  <div class="row pt-4 card" >
+    <div class="col-10" *ngIf="viewPieChart">
+      <div class="page-title"> Fintastics Information </div>
+      <mat-card-content style="padding-bottom: 0px"  *ngIf="chartList && chartList.length == 4">
+          <ngx-charts-pie-chart [view]="[580, 400]" [results]="chartList" [gradient]="gradient"
+              [legend]="true" [labels]="true" [scheme]="colorScheme"
+              >
+            </ngx-charts-pie-chart>
+      </mat-card-content>
     </div>
-    <div class="col-xl-6">
-      <div class="card">
-        <div class="card-body pt-2">
-       
-          <h6 class="font-size-16 mb-4">Chart 2</h6>
 
-          <div class="row calendar-widget">
-            <div class="col-sm-6">
-            
-            </div>
-            <div class="col-sm-6">
-             
-            </div>
-          </div>
-        </div>
+    <div class="col-10 pl-2" *ngIf="viewBarChart" >
+        <div class="page-title"> Fintastics Information </div>
+        <mat-card-content >
+          <ngx-charts-bar-vertical *ngIf="chartList.length > 0"   [view]="[600, 400]" [results]="chartList"
+            [gradient]="gradient" [xAxis]="showXAxis" [showGridLines]="false"  [barPadding]="barPadding"
+            [legend]="legend" [showDataLabel]="showDataLabel" [xAxisLabel]="xAxisLabel" [scheme]="colorScheme" 
+            [yAxisLabel]="yAxisLabel"    [xAxisTickFormatting]="xAxisTickFormatting"  style="fill: #2B2B2B;">
+            (select)="onSelect($event)">
+          </ngx-charts-bar-vertical>
+        </mat-card-content>
       </div>
-    </div>  
-  </div> -->
+
+      <!-- [legendPosition]="legendPosition" -->
+      <div class="col-10" *ngIf="viewgGuge">
+        <div class="page-title"> Fintastics Information </div>
+        <mat-card-content >
+          <ngx-charts-gauge *ngIf="chartList.length > 0"  [view]="[600, 400]" [scheme]="colorScheme" [results]="chartList"
+            [legend]="legend" [units]="'Fintastics'"  [min]="0" [max]="50" (select)="onSelect($event)"
+            (activate)="onActivate($event)" (deactivate)="onDeactivate($event)">
+          </ngx-charts-gauge>
+        </mat-card-content>
+      </div>
+
+  </div>
  
 
 </div>

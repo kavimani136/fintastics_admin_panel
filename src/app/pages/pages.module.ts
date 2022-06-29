@@ -14,9 +14,11 @@ import { TransactionTypeComponent } from './transaction-type/transaction-type.co
 import { TransactionDescriptionComponent } from './transaction-description/transaction-description.component';
 import { TransactionTypeModule } from './transaction-type/transaction-type.module';
 import { TransactionDescriptionModule } from './transaction-description/transaction-description.module';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { AppMaterialModules } from '../material.module';
 @NgModule({
   declarations: [DashboardComponent],
-  imports: [    
+  imports: [   NgxChartsModule, 
     TransactionTypeModule,
     TransactionDescriptionModule,
     UserDetailsModule,
@@ -27,7 +29,7 @@ import { TransactionDescriptionModule } from './transaction-description/transact
     ChildUserDetailsModule,
     TransactionDetailsModule,
     UIModule,
-    PagesRoutingModule,
+    PagesRoutingModule,AppMaterialModules
   ]
 })
 export class PagesModule { }

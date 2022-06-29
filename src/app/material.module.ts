@@ -45,6 +45,7 @@ import { MatBadgeModule } from '@angular/material/badge';
 @NgModule({
   exports: [
     // Material Modules
+    
     MatAutocompleteModule,
     MatBadgeModule,
     MatButtonModule,
